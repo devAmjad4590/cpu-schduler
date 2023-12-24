@@ -32,6 +32,7 @@
       </form>
     </div>
   </div>
+  <Output :completed="completed" :queue="queue"></Output>
 </template>
 
 <script>
@@ -40,6 +41,7 @@ import AlgoSelection from "./components/AlgoSelection.vue";
 import InputForm from "./components/InputForm.vue";
 import Button from "./components/Button.vue";
 import Quantum from "./components/Quantum.vue";
+import Output from "./components/Output.vue";
 
 export default {
   name: "App",
@@ -49,6 +51,7 @@ export default {
     InputForm,
     Button,
     Quantum,
+    Output
   },
   data() {
     return {
@@ -57,6 +60,8 @@ export default {
       burstTime: [],
       result: false,
       quantum: 0,
+      completed: [],
+      queue:[]
     };
   },
   methods: {
@@ -122,24 +127,7 @@ export default {
     process.waitingTime = process.turnAroundTime - process.burstTime;
   }
 
-  const caculateAvgWaitingTime = () => {
-    let totalWaitingTime = 0;
-    for(let i = 0; i < completed.length; i++){
-      totalWaitingTime += completed[i].waitingTime;
-    }
-    let avgWaitingTime = totalWaitingTime / completed.length;
-    return avgWaitingTime.toFixed(2);
-  }
-
-  const caculateAvgTurnAroundTime = () => {
-    let totalTurnAroundTime = 0;
-    for(let i = 0; i < completed.length; i++){
-      totalTurnAroundTime += completed[i].turnAroundTime;
-    }
-    // format it to 2 decimal places
-    let avgTurnAroundTime = totalTurnAroundTime / completed.length;
-    return avgTurnAroundTime.toFixed(2);
-  }
+  
 
   for (let i = 0; i < this.arrivalTime.length; i++) {
     processes.push({
@@ -165,6 +153,7 @@ export default {
   while(readyQueue.length > 0){
     readyQueue.sort((a, b) => a.newArrivalTime - b.newArrivalTime)
     let currentProcess = readyQueue.shift();
+    this.queue.push(currentProcess);
     if(currentProcess.remainingTime > this.quantum){
       currentTime += this.quantum;
       currentProcess.remainingTime -= this.quantum;
@@ -177,15 +166,15 @@ export default {
       currentProcess.completedTime = currentTime;
       calculateTurnAroundTime(currentProcess);
       caculateWaitingTime(currentProcess);
-      completed.push(currentProcess);
+      this.completed.push(currentProcess);
+      this.result = true;
     }
 
 
     
   }
-  console.log(caculateAvgWaitingTime())
-  console.log(caculateAvgTurnAroundTime())
-  console.log(completed)
+
+  console.log(this.completed)
   
   }
   ,
@@ -204,6 +193,9 @@ export default {
 }
 
 body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 0;
   padding: 0;
   font-family: sans-serif;
@@ -212,14 +204,8 @@ body {
 
 /* center div */
 .main-div {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border: 2px solid black;
   border-radius: 25px;
-
-  /* increase the size of the div */
   width: 750px;
   height: 600px;
   text-align: center;
