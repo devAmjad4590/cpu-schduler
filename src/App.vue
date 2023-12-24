@@ -32,7 +32,7 @@
       </form>
     </div>
   </div>
-  <Output :completed="completed" :queue="queue"></Output>
+  <Output v-if="result" :completed="completed" :queue="queue"></Output>
 </template>
 
 <script>
@@ -209,6 +209,7 @@ body {
   width: 750px;
   height: 600px;
   text-align: center;
+  margin-top: 100px;
 }
 
 .extend-div {

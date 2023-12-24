@@ -1,6 +1,6 @@
 <template>
   <div class="output">
-    <h3>Output</h3>
+    <h1>Output</h1>
     <table class="table">
       <tr>
         <th>Process</th>
@@ -10,8 +10,17 @@
         <th>Turnaround Time</th>
         <th>Waiting time</th>
       </tr>
+      <tr v-for="(item, index) in completed" :key="index">
+        <td>{{ item.process }}</td>
+        <td>{{ item.arrivalTime }}</td>
+        <td>{{ item.burstTime }}</td>
+        <td>{{ item.completedTime }}</td>
+        <td>{{ item.turnAroundTime }}</td>
+        <td>{{ item.waitingTime }}</td>
+      </tr>
     </table>
-    <button v-on:click="printArray">Test</button>
+    <h3>Average Waiting Time: {{ avgWaitingTime }}</h3>
+    <h3>Average Turnaround Time: {{ avgTurnAroundTime }}</h3>
   </div>
 </template>
 
@@ -28,20 +37,6 @@ export default {
     },
   },
   methods: {
-    printArray() {
-      console.log(this.completed);
-      console.log(this.queue)
-      console.log(this.avgWaitingTime);
-      console.log(this.avgTurnAroundTime);
-
-
-      // resetting values after displaying them (very important to do this)
-    //   this.completed.length = 0;
-    //   this.queue.length = 0;
-    //   this.avgTurnAroundTime = 0;
-    // this.avgWaitingTime = 0;
-
-    },
   },
   computed: {
     avgWaitingTime() {
@@ -74,13 +69,27 @@ export default {
   height: 600px;
 }
 
+
+
 h3 {
+  margin-top: 20px;
+  margin-left: 10px;
   color: #e7e5ff;
 }
 
 table,
 th,
 td {
+
   border: 1px solid black;
+  text-align: center;
+  margin-left: 10px;
+  color: #e7e5ff;
+  font-size: 20px;
+
+}
+
+td th{
+  padding: 10px;
 }
 </style>
