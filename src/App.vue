@@ -32,7 +32,7 @@
       </form>
     </div>
   </div>
-  <Output v-if="result" :completed="completed" :queue="queue"></Output>
+  <Output v-if="result" :completed="completed" :queue="queue" :timeStamp="timeStamp"></Output>
 </template>
 
 <script>
@@ -61,24 +61,50 @@ export default {
       result: false,
       quantum: 0,
       completed: [],
-      queue:[]
+      queue:[],
+      timeStamp: []
     };
   },
   methods: {
+    reset(){
+      if(this.result == true){
+        this.result = false;
+        this.queue = [];
+        this.completed = [];
+        this.quantum = 0;
+        this.arrivalTime = [];
+        this.burstTime = [];
+        this.timeStamp = [];
+
+      }
+    }
+    ,
     handleChange(value) {
+      this.reset();
       this.algo = value;
     },
     handleArrivalInput(value) {
+      this.reset();
+
       this.arrivalTime = value;
+
     },
     handleBurstInput(value) {
+      this.reset();
+
       this.burstTime = value;
+
     },
     handleQuantum(value) {
+      this.reset();
+
       this.quantum = value;
+
     },
     handleClick() {
       this.clearForm();
+      this.reset();
+
       if (
         this.arrivalTime.length != this.burstTime.length ||
         this.arrivalTime.length == 0 ||
@@ -131,7 +157,7 @@ export default {
 
   for (let i = 0; i < this.arrivalTime.length; i++) {
     processes.push({
-      process: i + 1,
+      process: String.fromCharCode(65 + i),
       arrivalTime: this.arrivalTime[i],
       burstTime: this.burstTime[i],
       waitingTime: 0,
@@ -169,7 +195,8 @@ export default {
       this.completed.push(currentProcess);
       this.result = true;
     }
-
+    this.timeStamp.push(currentTime);
+    
 
     
   }

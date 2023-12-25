@@ -16,12 +16,13 @@ export default{
 }
 </script>
 
+
 <style>
 
 .gantt{
     border: 2px solid #ffbb00;
     text-align: center;
-    width: 30px;
+    width: 43px;
     height: 30px;
     background-color: #c99506;
 }

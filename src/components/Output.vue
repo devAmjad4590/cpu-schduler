@@ -3,6 +3,11 @@
     <h1>Output</h1>
     <div>
       <GanttChart :queue="queue"></GanttChart>
+      <div class="time-container">
+        <div class="time">0</div>
+        <div class="time" v-for="(time, index) in timeStamp" :key="index">{{ time }}</div>
+
+      </div>
     </div>
     <div>
       <table class="table">
@@ -45,6 +50,10 @@ export default {
       type: Array,
       required: true,
     },
+    timeStamp: {
+      type: Array,
+      required: true,
+    }
     
   },
   methods: {
@@ -69,8 +78,7 @@ export default {
       // format it to 2 decimal places
       let avgTurnAroundTime = totalTurnAroundTime / this.completed.length;
       return avgTurnAroundTime.toFixed(2);
-      this.completed.length = 0;
-      this.queue.length = 0;
+      
     },
   },
 };
@@ -82,11 +90,12 @@ export default {
   border: 2px solid black;
   border-radius: 25px;
   width: 750px;
-  height: 600px;
+  height: 650px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 50px;
+  margin-bottom: 50px;
 }
 
 
@@ -112,4 +121,18 @@ td {
 td th{
   padding: 10px;
 }
+
+.time{
+  color: #e7e5ff;
+  width: 45px;
+}
+
+.time-container{
+  margin-top: 5px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  
+}
+
 </style>
