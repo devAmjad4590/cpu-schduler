@@ -1,30 +1,40 @@
 <template>
   <div class="output">
     <h1>Output</h1>
-    <table class="table">
-      <tr>
-        <th>Process</th>
-        <th>Arrival Time</th>
-        <th>Burst Time</th>
-        <th>Finish Time</th>
-        <th>Turnaround Time</th>
-        <th>Waiting time</th>
-      </tr>
-      <tr v-for="(item, index) in completed" :key="index">
-        <td>{{ item.process }}</td>
-        <td>{{ item.arrivalTime }}</td>
-        <td>{{ item.burstTime }}</td>
-        <td>{{ item.completedTime }}</td>
-        <td>{{ item.turnAroundTime }}</td>
-        <td>{{ item.waitingTime }}</td>
-      </tr>
-    </table>
-    <h3>Average Waiting Time: {{ avgWaitingTime }}</h3>
-    <h3>Average Turnaround Time: {{ avgTurnAroundTime }}</h3>
+    <div>
+      <GanttChart :queue="queue"></GanttChart>
+    </div>
+    <div>
+      <table class="table">
+        <tr>
+          <th>Process</th>
+          <th>Arrival Time</th>
+          <th>Burst Time</th>
+          <th>Finish Time</th>
+          <th>Turnaround Time</th>
+          <th>Waiting time</th>
+        </tr>
+        <tr v-for="(item, index) in completed" :key="index">
+          <td>{{ item.process }}</td>
+          <td>{{ item.arrivalTime }}</td>
+          <td>{{ item.burstTime }}</td>
+          <td>{{ item.completedTime }}</td>
+          <td>{{ item.turnAroundTime }}</td>
+          <td>{{ item.waitingTime }}</td>
+        </tr>
+      </table>
+
+    </div>
+    <div>
+      <h3>Average Waiting Time: {{ avgWaitingTime }}</h3>
+      <h3>Average Turnaround Time: {{ avgTurnAroundTime }}</h3>
+
+    </div>
   </div>
 </template>
 
 <script>
+import GanttChart from "./GanttChart.vue";
 export default {
   props: {
     completed: {
@@ -35,8 +45,12 @@ export default {
       type: Array,
       required: true,
     },
+    
   },
   methods: {
+  },
+  components: {
+    GanttChart
   },
   computed: {
     avgWaitingTime() {
@@ -55,6 +69,8 @@ export default {
       // format it to 2 decimal places
       let avgTurnAroundTime = totalTurnAroundTime / this.completed.length;
       return avgTurnAroundTime.toFixed(2);
+      this.completed.length = 0;
+      this.queue.length = 0;
     },
   },
 };
@@ -67,6 +83,10 @@ export default {
   border-radius: 25px;
   width: 750px;
   height: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
 }
 
 
