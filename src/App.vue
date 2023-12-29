@@ -130,7 +130,9 @@ export default {
     SJR() {
       alert("SJF");
     },
-    PSJR() {},
+    PSJR() {
+      
+    },
     P() {
       alert("P");
     },
@@ -138,6 +140,7 @@ export default {
       alert("PP");
     },
     RR() {
+      // Copy from here
          // Create process objects
   let processes = [];
   let readyQueue = [];
@@ -180,6 +183,7 @@ export default {
     readyQueue.sort((a, b) => a.newArrivalTime - b.newArrivalTime)
     let currentProcess = readyQueue.shift();
     this.queue.push(currentProcess);
+    // till here
     if(currentProcess.remainingTime > this.quantum){
       currentTime += this.quantum;
       currentProcess.remainingTime -= this.quantum;
