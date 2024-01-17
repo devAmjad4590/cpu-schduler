@@ -19,7 +19,6 @@
                 options: [
                 {label: 'Preemptive Shortest Job First', value: 'PSJF'},
                 {label: 'Non Preemptive Shortest Job First', value: 'SJF'},
-                {label: 'Preemptive Priority', value: 'PP'},
                 {label: 'Non Preemptive Priority', value: 'P'},
                 {label: 'Round Robin', value: 'RR'}
                 ]
