@@ -118,7 +118,7 @@ export default {
         this.result = true;
       }
     },
-    SJR() {
+    SJF() {
       alert("SJF");
       let processes = [];
       let readyQueue = [];
@@ -170,7 +170,7 @@ export default {
       }
     }
     },
-    PSJR() { },
+    PSJF() { },
     P() { },
     PP() {
       alert("PP");
