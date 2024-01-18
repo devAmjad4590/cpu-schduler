@@ -1,51 +1,24 @@
 <template>
-  <div
-    :class="{
-      'main-div': true,
-      'extend-div': this.algo == 'RR' || this.algo == 'P',
-    }"
-  >
+  <div :class="{
+    'main-div': true,
+    'extend-div': this.algo == 'RR' || this.algo == 'P',
+  }">
     <Header title="CPU SCHEDULING ALGORITHM"> </Header>
     <div class="algo">
       <form @submit.prevent>
         <AlgoSelection @option-change="handleChange"></AlgoSelection>
-        <InputForm
-          @input-change="handleArrivalInput"
-          v-if="this.algo != ''"
-          title="Arrival Time"
-          ref="arrivalChild"
-        ></InputForm>
-        <InputForm
-          @input-change="handleBurstInput"
-          v-if="this.algo != ''"
-          title="Burst Time"
-          ref="burstChild"
-        ></InputForm>
-        <Quantum
-          @quantum-change="handleQuantum"
-          v-if="this.algo == 'RR'"
-          ref="quantumChild"
-        ></Quantum>
-        <InputForm
-          @input-change="handlePriority"
-          title="Priority"
-          v-if="this.algo == 'P'"
-          ref="priorityChild"
-        ></InputForm>
-        <Button
-          class="btn btn-extend"
-          v-if="this.algo != ''"
-          @click-event="handleClick"
-        ></Button>
+        <InputForm @input-change="handleArrivalInput" v-if="this.algo != ''" title="Arrival Time" ref="arrivalChild">
+        </InputForm>
+        <InputForm @input-change="handleBurstInput" v-if="this.algo != ''" title="Burst Time" ref="burstChild">
+        </InputForm>
+        <Quantum @quantum-change="handleQuantum" v-if="this.algo == 'RR'" ref="quantumChild"></Quantum>
+        <InputForm @input-change="handlePriority" title="Priority" v-if="this.algo == 'P'" ref="priorityChild">
+        </InputForm>
+        <Button class="btn btn-extend" v-if="this.algo != ''" @click-event="handleClick"></Button>
       </form>
     </div>
   </div>
-  <Output
-    v-if="result"
-    :completed="completed"
-    :queue="queue"
-    :timeStamp="timeStamp"
-  ></Output>
+  <Output v-if="result" :completed="completed" :queue="queue" :timeStamp="timeStamp"></Output>
 </template>
 
 <script>
@@ -76,7 +49,7 @@ export default {
       completed: [],
       queue: [],
       timeStamp: [],
-      priority: []
+      priority: [],
     };
   },
   methods: {
@@ -123,7 +96,8 @@ export default {
       if (
         this.arrivalTime.length != this.burstTime.length ||
         this.arrivalTime.length == 0 ||
-        this.burstTime.length == 0 || (this.algo == 'P' && this.priority.length != this.arrivalTime.length)
+        this.burstTime.length == 0 ||
+        (this.algo == "P" && this.priority.length != this.arrivalTime.length)
       ) {
         alert("Please enter valid input");
         // clear the input
@@ -131,8 +105,8 @@ export default {
         this.burstTime = [];
       } else if (
         !this.arrivalTime.every(Number.isInteger) ||
-        !this.burstTime.every(Number.isInteger)
-        || (this.algo == 'P' && !this.priority.every(Number.isInteger))
+        !this.burstTime.every(Number.isInteger) ||
+        (this.algo == "P" && !this.priority.every(Number.isInteger))
       ) {
         alert("Please enter only integers");
         // clear the input
@@ -146,11 +120,58 @@ export default {
     },
     SJR() {
       alert("SJF");
+      let processes = [];
+      let readyQueue = [];
+      let completed = [];
+      let currentTime = 0;
+      let remainingBurst = [...this.burstTime];
+
+      const calculateTurnAroundTime = (process) => {
+        process.turnAroundTime = process.completedTime - process.arrivalTime;
+      };
+
+      const calculateWaitingTime = (process) => {
+        process.waitingTime = process.turnAroundTime - process.burstTime;
+      };
+
+      for (let i = 0; i < this.arrivalTime.length; i++) {
+        processes.push({
+          process: String.fromCharCode(65 + i),
+          arrivalTime: this.arrivalTime[i],
+          burstTime: this.burstTime[i],
+          waitingTime: 0,
+          turnAroundTime: 0,
+          completedTime: 0, // Initialize completedTime to arrivalTime
+          remainingTime: remainingBurst[i],
+          newArrivalTime: this.arrivalTime[i],
+        });
+        // Sort processes by arrival time
+        processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+        currentTime = processes[0].arrivalTime;
+        for (let i = 0; i < processes.length; i++) {
+          readyQueue.push(processes[i]);
+        }
+        while (readyQueue.length > 0) {
+          readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+          if (processes[i].arrivalTime < currentTime) {
+            let currentProcess = readyQueue.shift();
+            currentTime += currentProcess.remainingTime;
+            currentProcess.remainingTime = 0;
+            currentProcess.completedTime = currentTime;
+            calculateTurnAroundTime(currentProcess);
+            calculateWaitingTime(currentProcess);
+            this.completed.push(currentProcess);
+            this.result = true;
+          
+          this.timeStamp.push(currentTime);
+          // till here
+
+        }
+      }
+    }
     },
-    PSJR() {},
-    P() {
-      
-    },
+    PSJR() { },
+    P() { },
     PP() {
       alert("PP");
     },
@@ -167,7 +188,7 @@ export default {
         process.turnAroundTime = process.completedTime - process.arrivalTime;
       };
 
-      const caculateWaitingTime = (process) => {
+      const calculateWaitingTime = (process) => {
         process.waitingTime = process.turnAroundTime - process.burstTime;
       };
 
@@ -207,21 +228,19 @@ export default {
           currentProcess.remainingTime = 0;
           currentProcess.completedTime = currentTime;
           calculateTurnAroundTime(currentProcess);
-          caculateWaitingTime(currentProcess);
+          calculateWaitingTime(currentProcess);
           this.completed.push(currentProcess);
           this.result = true;
         }
         this.timeStamp.push(currentTime);
       }
-
     },
     clearForm() {
       this.$refs.arrivalChild.clearForm();
       this.$refs.burstChild.clearForm();
-      if(this.algo == 'RR'){
+      if (this.algo == "RR") {
         this.$refs.quantumChild.clearForm();
-      }
-      else if(this.algo == 'P'){
+      } else if (this.algo == "P") {
         this.$refs.priorityChild.clearForm();
       }
     },
