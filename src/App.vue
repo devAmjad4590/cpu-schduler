@@ -119,9 +119,11 @@ export default {
       }
     },
     SJF() {
-      alert("SJF");
+      // Copy from here
+      // Create process objects
       let processes = [];
       let readyQueue = [];
+      let nextQueue = [];
       let completed = [];
       let currentTime = 0;
       let remainingBurst = [...this.burstTime];
@@ -145,30 +147,37 @@ export default {
           remainingTime: remainingBurst[i],
           newArrivalTime: this.arrivalTime[i],
         });
-        // Sort processes by arrival time
-        processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
-        currentTime = processes[0].arrivalTime;
-        for (let i = 0; i < processes.length; i++) {
-          readyQueue.push(processes[i]);
-        }
-        while (readyQueue.length > 0) {
-          readyQueue.sort((a, b) => a.burstTime - b.burstTime);
-          if (processes[i].arrivalTime < currentTime) {
-            let currentProcess = readyQueue.shift();
-            currentTime += currentProcess.remainingTime;
-            currentProcess.remainingTime = 0;
-            currentProcess.completedTime = currentTime;
-            calculateTurnAroundTime(currentProcess);
-            calculateWaitingTime(currentProcess);
-            this.completed.push(currentProcess);
-            this.result = true;
-          
-          this.timeStamp.push(currentTime);
-          // till here
-
-        }
       }
-    }
+
+      // Sort processes by arrival time
+      processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+      currentTime = processes[0].arrivalTime;
+      for (let i = 0; i < processes.length; i++) {
+        readyQueue.push(processes[i]);
+      }
+      // Loop until all processes are completed
+      while (readyQueue.length > 0) {
+        let currentProcess;
+        if (currentTime => currentProcess.arrivalTime) {
+         readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+         currentProcess = readyQueue.shift(); 
+        this.queue.push(currentProcess);
+      
+        }
+        else{
+          readyQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
+          currentProcess = readyQueue.shift(); 
+        this.queue.push(currentProcess);
+          console.log("Failed to");
+        } 
+        
+        currentTime += currentProcess.burstTime;
+          currentProcess.completedTime = currentTime;
+          calculateTurnAroundTime(currentProcess);
+          calculateWaitingTime(currentProcess);
+          this.completed.push(currentProcess);
+          this.result = true;
+       }
     },
     PSJF() { },
     P() { },
