@@ -177,6 +177,7 @@ export default {
           calculateWaitingTime(currentProcess);
           this.completed.push(currentProcess);
           this.result = true;
+          this.timeStamp.push(currentTime);
        }
     },
     PSJF() { },
