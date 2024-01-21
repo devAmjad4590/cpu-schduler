@@ -123,7 +123,7 @@ export default {
       // Create process objects
       let processes = [];
       let readyQueue = [];
-      let nextQueue = [];
+      let arrivalQueue = [];
       let completed = [];
       let currentTime = 0;
       let remainingBurst = [...this.burstTime];
@@ -154,23 +154,30 @@ export default {
       currentTime = processes[0].arrivalTime;
       for (let i = 0; i < processes.length; i++) {
         readyQueue.push(processes[i]);
+        arrivalQueue.push(processes[i]);
       }
+      let currentProcess =  processes[0];
+      //
       // Loop until all processes are completed
       while (readyQueue.length > 0) {
-        let currentProcess;
-        if (currentTime => currentProcess.arrivalTime) {
+        arrivalQueue.sort((a,b) => a.burstTime - b.burstTime);
+        currentProcess = arrivalQueue.shift();
+        
+        
+        if (currentTime >= currentProcess.arrivalTime) { //always true
          readyQueue.sort((a, b) => a.burstTime - b.burstTime);
          currentProcess = readyQueue.shift(); 
         this.queue.push(currentProcess);
       
         }
         else{
+          arrivalQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
           readyQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
           currentProcess = readyQueue.shift(); 
         this.queue.push(currentProcess);
           console.log("Failed to");
         } 
-        
+        console.log(currentProcess);
         currentTime += currentProcess.burstTime;
           currentProcess.completedTime = currentTime;
           calculateTurnAroundTime(currentProcess);
@@ -180,7 +187,8 @@ export default {
           this.timeStamp.push(currentTime);
        }
     },
-    PSJF() { },
+    PSJF() {
+      },
     P() { },
     PP() {
       alert("PP");
