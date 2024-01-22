@@ -152,6 +152,7 @@ export default {
       // Sort processes by arrival time
       processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
       currentTime = processes[0].arrivalTime;
+      this.timeStamp.push(currentTime);
       for (let i = 0; i < processes.length; i++) {
         readyQueue.push(processes[i]);
         arrivalQueue.push(processes[i]);
@@ -226,6 +227,7 @@ export default {
       // Sort processes by arrival time
       processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
       currentTime = processes[0].arrivalTime;
+      this.timeStamp.push(currentTime);
       for (let i = 0; i < processes.length; i++) {
         readyQueue.push(processes[i]);
       }

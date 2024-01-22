@@ -4,7 +4,6 @@
     <div>
       <GanttChart :queue="queue"></GanttChart>
       <div class="time-container">
-        <div class="time">0</div>
         <div class="time" v-for="(time, index) in timeStamp" :key="index">{{ time }}</div>
 
       </div>
