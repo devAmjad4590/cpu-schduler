@@ -123,7 +123,6 @@ export default {
       // Create process objects
       let processes = [];
       let readyQueue = [];
-      let arrivalQueue = [];
       let completed = [];
       let currentTime = 0;
       let remainingBurst = [...this.burstTime];
@@ -153,43 +152,91 @@ export default {
       processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
       currentTime = processes[0].arrivalTime;
       this.timeStamp.push(currentTime);
-      for (let i = 0; i < processes.length; i++) {
-        readyQueue.push(processes[i]);
-        arrivalQueue.push(processes[i]);
-      }
-      let currentProcess =  processes[0];
+      let currentProcess = null;
       //
       // Loop until all processes are completed
-      while (readyQueue.length > 0) {
-        arrivalQueue.sort((a,b) => a.burstTime - b.burstTime);
-        currentProcess = arrivalQueue.shift();
-        
-        
-        if (currentTime >= currentProcess.arrivalTime) { //always true
-         readyQueue.sort((a, b) => a.burstTime - b.burstTime);
-         currentProcess = readyQueue.shift(); 
-        this.queue.push(currentProcess);
-      
+      while (processes.length > 0 || readyQueue > 0) {
+
+
+
+        while (processes.length > 0 && processes[0].arrivalTime <= currentTime) { //always true
+          readyQueue.push(processes.shift());
+
         }
-        else{
-          arrivalQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
-          readyQueue.sort((a, b) => a.arrivalTime - b.arrivalTime);
-          currentProcess = readyQueue.shift(); 
-        this.queue.push(currentProcess);
-          console.log("Failed to");
-        } 
-        console.log(currentProcess);
-        currentTime += currentProcess.burstTime;
+        while (readyQueue.length > 0) {
+          readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+          currentProcess = readyQueue.shift();
+          this.queue.push(currentProcess);
+          currentTime += currentProcess.burstTime;
           currentProcess.completedTime = currentTime;
           calculateTurnAroundTime(currentProcess);
           calculateWaitingTime(currentProcess);
           this.completed.push(currentProcess);
-          this.result = true;
           this.timeStamp.push(currentTime);
-       }
+        }
+        this.result = true;
+      }
     },
     PSJF() {
-      },
+      // Copy from here
+      // Create process objects
+      let processes = [];
+      let readyQueue = [];
+      let completed = [];
+      let currentTime = 0;
+      let remainingBurst = [...this.burstTime];
+
+      const calculateTurnAroundTime = (process) => {
+        process.turnAroundTime = process.completedTime - process.arrivalTime;
+      };
+
+      const calculateWaitingTime = (process) => {
+        process.waitingTime = process.turnAroundTime - process.burstTime;
+      };
+
+      for (let i = 0; i < this.arrivalTime.length; i++) {
+        processes.push({
+          process: String.fromCharCode(65 + i),
+          arrivalTime: this.arrivalTime[i],
+          burstTime: this.burstTime[i],
+          waitingTime: 0,
+          turnAroundTime: 0,
+          completedTime: 0, // Initialize completedTime to arrivalTime
+          remainingTime: remainingBurst[i],
+          newArrivalTime: this.arrivalTime[i],
+        });
+      }
+
+      // Sort processes by arrival time
+      processes.sort((a, b) => a.arrivalTime - b.arrivalTime);
+      currentTime = processes[0].arrivalTime;
+      this.timeStamp.push(currentTime);
+      let currentProcess = null;
+      //
+      // Loop until all processes are completed
+      while (processes.length > 0 || readyQueue > 0) {
+
+
+
+        while (processes.length > 0 && processes[0].arrivalTime <= currentTime) { //always true
+          readyQueue.push(processes.shift());
+
+        }
+        while (readyQueue.length > 0) {
+          readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+          currentProcess = readyQueue.shift();
+          this.queue.push(currentProcess);
+          currentTime += currentProcess.burstTime;
+          currentProcess.completedTime = currentTime;
+          calculateTurnAroundTime(currentProcess);
+          calculateWaitingTime(currentProcess);
+          this.completed.push(currentProcess);
+          this.timeStamp.push(currentTime);
+        }
+        this.result = true;
+      }
+      
+    },
     P() { },
     PP() {
       alert("PP");
