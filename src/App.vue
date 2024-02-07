@@ -137,7 +137,7 @@ export default {
 
       for (let i = 0; i < this.arrivalTime.length; i++) {
         processes.push({
-          process: String.fromCharCode(65 + i),
+          process: `P${i}`,
           arrivalTime: this.arrivalTime[i],
           burstTime: this.burstTime[i],
           waitingTime: 0,
@@ -198,7 +198,7 @@ export default {
 
       for (let i = 0; i < this.arrivalTime.length; i++) {
         processes.push({
-          process: String.fromCharCode(65 + i),
+          process: `P${i}`,
           arrivalTime: this.arrivalTime[i],
           burstTime: this.burstTime[i],
           waitingTime: 0,
@@ -288,7 +288,7 @@ export default {
 
       for (let i = 0; i < this.arrivalTime.length; i++) {
         processes.push({
-          process: String.fromCharCode(65 + i),
+          process: `P${i}`,
           arrivalTime: this.arrivalTime[i],
           burstTime: this.burstTime[i],
           priority: this.priority[i],
@@ -356,7 +356,7 @@ export default {
 
       for (let i = 0; i < this.arrivalTime.length; i++) {
         processes.push({
-          process: String.fromCharCode(65 + i),
+          process: `P${i}`,
           arrivalTime: this.arrivalTime[i],
           burstTime: this.burstTime[i],
           waitingTime: 0,
