@@ -88,7 +88,7 @@ export default {
   margin-top: 50px;
   border: 2px solid black;
   border-radius: 25px;
-  width: 750px;
+  width: 950px;
   height: 650px;
   display: flex;
   flex-direction: column;
