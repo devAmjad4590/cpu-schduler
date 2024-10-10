@@ -1,6 +1,10 @@
 # CPU Scheduling Algorithm
 
 This project implements various CPU scheduling algorithms including Shortest Job First (SJF), Preemptive Shortest Job First (PSJF), Priority Scheduling (P), and Round Robin (RR). The project is built using Vue.js and allows users to input arrival times, burst times, and other relevant parameters to visualize the scheduling process.
+
+## Project Preview
+![CPU-Scheduler](gifs/demo.gif)
+
 ## Project Setup
 
 ### Install Dependencies
