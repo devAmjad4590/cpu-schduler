@@ -42,9 +42,9 @@ The Priority Scheduling algorithm selects the process with the highest priority 
 The Round Robin algorithm assigns a fixed time quantum to each process in the ready queue. It is a preemptive algorithm.
 
 ## File Structure
-`src/algorithms/SJF.js`: Implementation of the Shortest Job First algorithm.
-`src/algorithms/PSJF.js`: Implementation of the Preemptive Shortest Job First algorithm.
-`src/algorithms/P.js`: Implementation of the Priority Scheduling algorithm.
-`src/algorithms/RR.js`: Implementation of the Round Robin algorithm.
-`src/components/`: Vue components for the project.
-`src/App.vue`: Main Vue component that integrates all the algorithms and components.
+`src/algorithms/SJF.js`: Implementation of the Shortest Job First algorithm. <br>
+`src/algorithms/PSJF.js`: Implementation of the Preemptive Shortest Job First algorithm.<br>
+`src/algorithms/P.js`: Implementation of the Priority Scheduling algorithm.<br>
+`src/algorithms/RR.js`: Implementation of the Round Robin algorithm.<br>
+`src/components/`: Vue components for the project.<br>
+`src/App.vue`: Main Vue component that integrates all the algorithms and components.<br>
